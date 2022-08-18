@@ -1,13 +1,18 @@
+import styles from '../styles/Home.module.css'
+import { loginUser } from '../components/api/api'
+import { signIn, getUserName, printSignIn } from '../reducer/usersSlicer'
+
 import { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import styles from '../styles/Home.module.css'
-import { loginUser } from '../components/api/api'
 import { useMutation } from 'react-query'
+import { NextResponse } from 'next/server'
+import { useDispatch, useSelector } from 'react-redux'
 
 export default function Home() {
 
   const router = useRouter();
+  const dispatch = useDispatch();
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -21,8 +26,16 @@ export default function Home() {
       setPassword('')
   }
 
-  if(loginUserMutation.isSuccess){
-    router.push('/user/category')
+  const handleredux = () => {
+    
+  }
+
+  if (loginUserMutation.isSuccess) {
+    console.log(loginUserMutation.data.username)
+    dispatch(signIn({ username: loginUserMutation.data.username, role: loginUserMutation.data.role, token: loginUserMutation.data.token }))
+
+  } else if(loginUserMutation.error){
+    console.log(loginUserMutation.error.message)
   }
 
   return (
@@ -46,6 +59,8 @@ export default function Home() {
           <div className={styles.info}>
             <p>Don't have an account? <Link href="/register"><a className={styles.link}>Sign Up</a></Link></p>
         </div>
+
+        <button onClick={handleredux}>click here</button>
       </div>
     </div>
   )

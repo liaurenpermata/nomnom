@@ -1,13 +1,16 @@
 import styles from '../styles/Home.module.css'
+import { registerUser } from '../components/api/api';
+
 import Link from 'next/link'
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useMutation } from 'react-query'
-import { registerUser } from '../components/api/api';
+import { useDispatch } from 'react-redux';
 
 const register = () => {
 
     const router = useRouter();
+    const dispatch = useDispatch();
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
